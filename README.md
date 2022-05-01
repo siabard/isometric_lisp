@@ -1,9 +1,14 @@
 # isometric_lisp
-### _Your Name <your.name@example.com>_
+### Yeonho Jang <siabard@gmail.com>
 
-This is a project to do ... something.
+Isometric roguelike game with 2.5D tileset.
+
+Using below tech stack and tools
+
+- Common Lisp
+- SDL2
 
 ## License
 
-Specify license here
+BSD License
 
