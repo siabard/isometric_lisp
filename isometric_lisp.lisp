@@ -1,6 +1,13 @@
 ;;;; isometric_lisp.lisp
 
-(in-package #:isometric_lisp)
+(in-package #:isometric-lisp)
+
+;; TODO making game system
+
+(defun update (dt)
+  "do system change with dt"
+  dt ;; not yet determined
+  )
 
 (defun draw (renderer)
   (sdl2:set-render-draw-color renderer 155 59 155 255)
@@ -18,10 +25,11 @@
 		    (when (sdl2:scancode= (sdl2:scancode-value keysym) :scancode-escape)
 		      (sdl2:push-event :quit)))
 	    (:idle ()
-		   (let ((current-ticks (sdl2:get-tick))
-			 (dt (- current-ticks previous-ticks)))
+		   (let* ((current-ticks (sdl2:get-ticks))
+			  (dt (- current-ticks previous-ticks)))
+		     (update dt)
 		     (draw renderer)
-		     (setq )))
+		     (setq previous-ticks current-ticks )))
 	    (:quit ()
 		   (progn
 		     (sdl2-image:quit)
