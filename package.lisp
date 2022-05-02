@@ -1,4 +1,4 @@
 ;;;; package.lisp
 
-(defpackage #:isometric_lisp
+(defpackage #:isometric-lisp
   (:use #:cl))
