@@ -3,34 +3,45 @@
 ;; KEY related function
 ;; TODO: should refactoring to class or struct
 
-(defvar *pressed-key* (make-hash-table :test #'equal))
-(defvar *released-key* (make-hash-table :test #'equal))
-(defvar *held-keys* (make-hash-table :test #'equal))
+(defclass key-input () ((pressed :accessor pressed)
+			(released :accessor release)
+			(held :accessor held)))
 
-(defun init-keys ()
-  (clrhash *pressed-key*)
-  (clrhash *released-key*)
-  (clrhash *held-keys*))
+;;(defvar *pressed-key* (make-hash-table :test #'equal))
+;;(defvar *released-key* (make-hash-table :test #'equal))
+;;(defvar *held-keys* (make-hash-table :test #'equal))
 
-(defun clear-keys ()
-  (clrhash *pressed-key*)
-  (clrhash *released-key*))
+(defmethod init-keys ((new-key-input key-input))
+  (setf (slot-value new-key-input 'pressed) (make-hash-table :test 'equal))
+  (setf (slot-value new-key-input 'released) (make-hash-table :test 'equal))
+  (setf (slot-value new-key-input 'held) (make-hash-table :test 'equal)))
 
-(defun keyup-event (scancode)
-  (setf (gethash scancode *released-key*) t)
-  (setf (gethash scancode *held-keys*) nil))
+(defmethod clear-keys ((keys key-input))
+  (clrhash (slot-value keys 'pressed))
+  (clrhash (slot-value keys 'released)))
 
-(defun keydown-event (scancode)
-  (setf (gethash scancode *pressed-key*) t)
-  (setf (gethash scancode *held-keys*) t))
+(defmethod keyup-event ((keys key-input) scancode)
+  (let ((released (slot-value keys 'released))
+	(held (slot-value keys 'held)))
+    (setf (gethash scancode released) t)
+    (setf (gethash scancode held) nil)))
 
-(defun key-pressed-p (scancode)
-  (gethash scancode *pressed-key* nil))
+(defmethod keydown-event ((keys key-input) scancode)
+  (let ((pressed (slot-value keys 'pressed))
+	(held (slot-value keys 'held)))
+    (setf (gethash scancode pressed) t)
+    (setf (gethash scancode held) t)))
 
-(defun key-released-p (scancode)
-  (gethash scancode *released-key* nil))
+(defmethod key-pressed-p ((keys key-input) scancode)
+  (let ((pressed (slot-value keys 'pressed)))
+    (gethash scancode pressed nil)))
 
-(defun key-held-p (scancode)
-  (gethash scancode *held-keys* nil))
+(defmethod key-released-p ((keys key-input) scancode)
+  (let ((released (slot-value keys 'released)))
+    (gethash scancode released nil)))
+
+(defmethod key-held-p ((keys key-input) scancode)
+  (let ((held (slot-value keys 'held)))
+    (gethash scancode held nil)))
 
 ;; //END OF KEY related function
