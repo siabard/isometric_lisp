@@ -8,4 +8,6 @@
   :serial t
   :depends-on (#:sdl2 #:sdl2-image #:sdl2-mixer #:sdl2-ttf)
   :components ((:file "package")
-	       (:file "isometric_lisp")))
+               (:file "tile")
+               (:file "key")
+	           (:file "isometric_lisp")))
