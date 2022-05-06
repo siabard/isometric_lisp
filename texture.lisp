@@ -39,3 +39,22 @@
        texture
        :source-rect (src-rect spr)
        :dest-rect (sdl2:make-rect (x spr) (y spr) (w spr) (h spr))))))
+
+
+;; Texture Atlas 클래스
+;; 각 텍스쳐별로 Texture의 위치를
+;; 별도로 보관
+;; name : [(x y w h) ... ]
+
+(defparameter *texture-atlas* (make-hash-table :test 'equal))
+
+(defun add-to-texture-atlas (name texture-width texture-height tile-width tile-height)
+  (let ((tile-rows (floor texture-height tile-height))
+	(tile-cols (floor texture-width tile-height)))
+    (setf (gethash name *texture-atlas*)
+	  (loop for y below tile-rows
+		nconcing (loop for x below tile-cols
+			       collect (list (* x tile-width) (* y tile-width) tile-width tile-height))))))
+
+(defun get-texture-atlas (name pos)
+  (elt (gethash name *texture-atlas*) pos))
