@@ -10,4 +10,5 @@
   :components ((:file "package")
                (:file "texture")
                (:file "key")
-	           (:file "isometric_lisp")))
+	       (:file "tile-map")
+	       (:file "isometric_lisp")))
