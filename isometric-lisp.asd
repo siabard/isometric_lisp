@@ -11,4 +11,5 @@
                (:file "texture")
                (:file "key")
 	       (:file "tile-map")
+	       (:file "utils")
 	       (:file "isometric_lisp")))

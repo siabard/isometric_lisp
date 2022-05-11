@@ -58,3 +58,4 @@
 
 (defun get-texture-atlas (name pos)
   (elt (gethash name *texture-atlas*) pos))
+
