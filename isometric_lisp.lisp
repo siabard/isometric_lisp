@@ -26,6 +26,7 @@
 	      (init-keys keys)
 	      (load-texture renderer "isotiles" "resources/tiles/isotiles.png")
 	      (add-to-texture-atlas "isotiles" 320 80 64 80)
+	      (make-camera-rect 0 0 320 240)
 	      (let* ((isotiles-cube (get-texture-atlas "isotiles" 0))
 		     (sprite (apply #'create-sprite (cons  "isotiles" isotiles-cube)))
 		     (world-map (make-tiled-map "world-map" "isotiles" 3 3 64 80)))
@@ -48,3 +49,4 @@
 			 (progn
 		           (sdl2-image:quit)
 		           t)))))))))
+

@@ -12,4 +12,5 @@
                (:file "key")
 	       (:file "tile-map")
 	       (:file "utils")
+	       (:file "camera")
 	       (:file "isometric_lisp")))

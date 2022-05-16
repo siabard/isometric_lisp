@@ -45,9 +45,13 @@
 	 (texture (gethash texture-name *texture-repository*)))
     (loop for y below height
 	  do (loop for x below width
-		   do (progn
-			(sdl2:render-copy-ex renderer
-					     texture
-					     :source-rect (list-to-rect (get-texture-atlas texture-name (elt tile-layer (+ x  (* y width)))))
-					     :dest-rect (sdl2:make-rect (* x tile-width) (* y tile-height) tile-width tile-height)))))))
+		   do (let ((dest-rect (sdl2:make-rect (* x tile-width) (* y tile-height) tile-width tile-height)))
+			(when  (sdl2:intersect-rect *camera-rect* dest-rect)
+			  (let ((dest-rect (sdl2:make-rect (- (* x tile-width) (sdl2:rect-x *camera-rect*))
+							   (- (* y tile-height) (sdl2:rect-y *camera-rect*))
+							   tile-width tile-height)))
+			    (sdl2:render-copy-ex renderer
+						 texture
+						 :source-rect (list-to-rect (get-texture-atlas texture-name (elt tile-layer (+ x  (* y width)))))
+						 :dest-rect dest-rect))))))))
 
