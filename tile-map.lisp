@@ -45,10 +45,15 @@
 	 (texture (gethash texture-name *texture-repository*)))
     (loop for y below height
 	  do (loop for x below width
-		   do (let ((dest-rect (sdl2:make-rect (* x tile-width) (* y tile-height) tile-width tile-height)))
+		   do (let* ((orig-x (+ (* 32 7) (* x *tile-size*)))
+			     (orig-y (+ (* 32 0) (* y *tile-size*)))
+			     (iso-transform (cardinal-to-isometric orig-x orig-y))
+			     (iso-x (car iso-transform))
+			     (iso-y (cadr iso-transform))
+			     (dest-rect (sdl2:make-rect iso-x iso-y tile-width tile-height)))
 			(when  (sdl2:intersect-rect *camera-rect* dest-rect)
-			  (let ((dest-rect (sdl2:make-rect (- (* x tile-width) (sdl2:rect-x *camera-rect*))
-							   (- (* y tile-height) (sdl2:rect-y *camera-rect*))
+			  (let* ((dest-rect (sdl2:make-rect (- iso-x (sdl2:rect-x *camera-rect*))
+							   (- iso-y (sdl2:rect-y *camera-rect*))
 							   tile-width tile-height)))
 			    (sdl2:render-copy-ex renderer
 						 texture

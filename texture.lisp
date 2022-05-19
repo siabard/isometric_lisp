@@ -50,7 +50,7 @@
 
 (defun add-to-texture-atlas (name texture-width texture-height tile-width tile-height)
   (let ((tile-rows (floor texture-height tile-height))
-	(tile-cols (floor texture-width tile-height)))
+	(tile-cols (floor texture-width tile-width)))
     (setf (gethash name *texture-atlas*)
 	  (loop for y below tile-rows
 		nconcing (loop for x below tile-cols

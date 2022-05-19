@@ -2,6 +2,9 @@
 
 (in-package #:isometric-lisp)
 
+;; constants
+(defparameter *tile-size* 32)
+
 ;; making mouse system
 (defstruct mouse-system x y button-l button-r)
 
@@ -21,10 +24,15 @@
 (defun draw (renderer mouse-state keys map sprite)
   (sdl2:set-render-draw-color renderer 155 155 155 255)
   (sdl2:render-clear renderer)
-  (setf (x sprite) (mouse-system-x mouse-state))
-  (setf (y sprite) (mouse-system-y mouse-state))
   (render renderer map)
-  (render renderer sprite)
+  (let ((tile-x (* *tile-size*  (floor (mouse-system-x mouse-state) *tile-size*)))
+	(tile-y (* *tile-size*  (floor (mouse-system-y mouse-state) *tile-size*))))
+    (setf (x sprite) tile-x)
+    (setf (y sprite)
+	  (cond ((= 0 (mod tile-x 2))
+		 (+ tile-y (floor  (* *tile-size* 0.5))))
+		(t tile-y)))
+    (render renderer sprite))
   (sdl2:render-present renderer))
 
 (defun main ()
@@ -38,11 +46,29 @@
 	      (init-keys keys)
 	      (load-texture renderer "isotiles" "resources/tiles/isotiles.png")
 	      (add-to-texture-atlas "isotiles" 320 80 64 80)
-	      (make-camera-rect 0 0 320 240)
+	      (make-camera-rect 0 0 640 800)
 	      (let* ((isotiles-cube (get-texture-atlas "isotiles" 0))
 		     (sprite (apply #'create-sprite (cons  "isotiles" isotiles-cube)))
-		     (world-map (make-tiled-map "world-map" "isotiles" 3 3 64 80)))
-		(set-tiled-map-layers world-map '(0 0 0 1 1 1 2 2 2))
+		     (world-map (make-tiled-map "world-map" "isotiles" 16 16 64 80)))
+		(set-tiled-map-layers world-map '
+				      (
+				       1 1 2 2 2 2 2 2 1 1 2 2 2 2 2 1
+					 1 1 1 1 2 1 1 2 1 1 2 2 2 2 2 1
+					 2 1 1 1 2 2 2 2 1 1 2 2 2 2 2 1
+					 2 1 1 2 2 1 1 2 1 1 2 2 2 2 2 1
+					 2 1 1 4 4 4 1 2 1 1 2 2 2 2 4 1
+					 2 1 1 4 4 4 1 2 1 1 2 2 2 2 2 1
+					 2 1 1 4 4 4 1 2 1 1 2 2 4 2 2 1
+					 2 2 2 4 4 4 2 1 2 3 3 3 4 2 2 1
+					 1 1 2 2 2 2 2 3 4 3 3 3 4 2 2 1
+					 1 1 1 1 2 1 1 2 1 3 3 3 2 2 2 3
+					 2 1 1 1 2 2 2 2 1 1 2 2 2 2 2 1
+					 2 1 1 2 2 1 1 2 1 1 3 2 2 2 4 4
+					 2 1 1 4 2 1 1 2 1 1 3 2 2 2 2 4
+					 2 1 1 1 2 1 1 2 1 1 3 3 3 3 3 4
+					 2 1 1 1 1 1 1 2 1 1 2 2 2 2 4 4
+					 2 2 2 2 2 2 2 2 1 1 2 2 2 2 2 1
+					 ))
 		(sdl2:with-event-loop (:method :poll)
 		  (:mousebuttonup (:button button)
 				  (cond ((= button 1)
