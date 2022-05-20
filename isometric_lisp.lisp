@@ -29,8 +29,9 @@
 	(tile-y (* *tile-size*  (floor (mouse-system-y mouse-state) *tile-size*))))
     (setf (x sprite) tile-x)
     (setf (y sprite)
-	  (cond ((= 0 (mod tile-x 2))
-		 (+ tile-y (floor  (* *tile-size* 0.5))))
+	  (cond ((not (equalp 0
+				(mod (floor tile-x *tile-size*) 2)))
+		 (+ tile-y (floor *tile-size* 2)))
 		(t tile-y)))
     (render renderer sprite))
   (sdl2:render-present renderer))

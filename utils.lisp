@@ -5,13 +5,13 @@
     rect))
 
 (defun cardinal-to-isometric (x y)
-  (let ((dx (floor  (- x y)))
-	(dy (floor  (* 0.5 (+ x y)))))
+  (let ((dx (- x y))
+	(dy (floor (+ x y) 2)))
     (list dx dy)))
 
 (defun isometric-to-cardinal (x y)
-  (let ((iso-x (floor  (* 0.5 (+ (* 2 y) x))))
-	(iso-y (floor  (* 0.5 (- (* 2 y) x)))))
+  (let ((iso-x (floor (+ (* 2 y) x) 2))
+	(iso-y (floor (- (* 2 y) x) 2)))
     (list iso-x iso-y)))
 
 (defun tile-coordinates (x y)
