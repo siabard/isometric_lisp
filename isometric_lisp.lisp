@@ -52,8 +52,7 @@
 		     (sprite (apply #'create-sprite (cons  "isotiles" isotiles-cube)))
 		     (world-map (make-tiled-map "world-map" "isotiles" 16 16 64 80)))
 		(set-tiled-map-layers world-map '
-				      (
-				       1 1 2 2 2 2 2 2 1 1 2 2 2 2 2 1
+				      (1 1 2 2 2 2 2 2 1 1 2 2 2 2 2 1
 					 1 1 1 1 2 1 1 2 1 1 2 2 2 2 2 1
 					 2 1 1 1 2 2 2 2 1 1 2 2 2 2 2 1
 					 2 1 1 2 2 1 1 2 1 1 2 2 2 2 2 1
@@ -68,8 +67,7 @@
 					 2 1 1 4 2 1 1 2 1 1 3 2 2 2 2 4
 					 2 1 1 1 2 1 1 2 1 1 3 3 3 3 3 4
 					 2 1 1 1 1 1 1 2 1 1 2 2 2 2 4 4
-					 2 2 2 2 2 2 2 2 1 1 2 2 2 2 2 1
-					 ))
+					 2 2 2 2 2 2 2 2 1 1 2 2 2 2 2 1))
 		(sdl2:with-event-loop (:method :poll)
 		  (:mousebuttonup (:button button)
 				  (cond ((= button 1)

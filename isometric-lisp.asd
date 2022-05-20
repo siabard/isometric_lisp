@@ -8,6 +8,7 @@
   :serial t
   :depends-on (#:sdl2 #:sdl2-image #:sdl2-mixer #:sdl2-ttf)
   :components ((:file "package")
+	       (:file "game")
                (:file "texture")
                (:file "key")
 	       (:file "tile-map")
